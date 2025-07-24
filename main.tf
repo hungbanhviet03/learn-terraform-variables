@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 
 provider "aws" {
-  region  = "us-west-2"
+  region  = var.aws_region
 }
 
 data "aws_availability_zones" "available" {
@@ -13,7 +13,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.7.0"
 
-  cidr = "10.0.0.0/16"
+  cidr = var.vpc_cidr_block
 
   azs             = data.aws_availability_zones.available.names
   private_subnets = ["10.0.101.0/24", "10.0.102.0/24"]
@@ -107,7 +107,7 @@ module "ec2_instances" {
   depends_on = [module.vpc]
 
   instance_count     = 2
-  instance_type      = "t2.micro"
+  instance_type      = "t3.micro"
   subnet_ids         = module.vpc.private_subnets[*]
   security_group_ids = [module.app_security_group.security_group_id]
 
