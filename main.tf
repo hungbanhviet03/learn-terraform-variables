@@ -23,7 +23,7 @@ module "vpc" {
   enable_vpn_gateway = var.enable_vpn_gateway
 
   tags = var.resource_tags # Thay thế khối tags cố định bằng biến
-  
+
 }
 
 module "app_security_group" {
@@ -105,7 +105,7 @@ module "ec2_instances" {
   depends_on = [module.vpc]
 
   instance_count     = var.instance_count
-  instance_type      = "t3.micro"
+  instance_type  = var.ec2_instance_type # Thay thế "t3.micro" bằng biến
   subnet_ids         = module.vpc.private_subnets[*]
   security_group_ids = [module.app_security_group.security_group_id]
 
